@@ -1,7 +1,7 @@
 import express from "express";
 import "dotenv/config";
 import morgan from "morgan";
-import { connectToDatabase } from "../utils/database";
+import { connectToDatabase } from "../database/database";
 import routes from "./routes/index";
 const app = express();
 const port = process.env.PORT;

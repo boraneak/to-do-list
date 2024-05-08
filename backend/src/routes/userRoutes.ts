@@ -1,11 +1,12 @@
 import express from "express";
 import { userServices } from "../services/index";
+import { verifyUserToken } from "../../middlewares/verifyUserToken";
 const router = express.Router();
 
-router.get("/", userServices.getAllUsers);
+router.get("/", verifyUserToken, userServices.getAllUsers);
 router.post("/register", userServices.register);
-router.post("/login", userServices.login)
-router.post("/create", userServices.createUser);
-router.put("/update/:id", userServices.updateUserById);
-router.delete("/delete/:id", userServices.deleteUserById);
+router.post("/login", userServices.login);
+router.post("/create", verifyUserToken, userServices.createUser);
+router.put("/update/:id", verifyUserToken, userServices.updateUserById);
+router.delete("/delete/:id", verifyUserToken, userServices.deleteUserById);
 export default router;

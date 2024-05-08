@@ -84,10 +84,12 @@ export const deleteUserById = async (req: Request, res: Response) => {
     const userId: number = parseInt(req.params.id, 10);
     await prisma.user.delete({ where: { id: userId } });
     res.status(204).send();
-  } catch (error: any) {
-    if (error.code === "P2025") {
-      res.status(404).json({ error: "User not found" });
-      return;
+  } catch (error) {
+    if (error instanceof Prisma.PrismaClientKnownRequestError) {
+      if (error.code === "P2025") {
+        res.status(404).json({ error: "User not found" });
+        return;
+      }
     }
     res.status(500).json({ error: "Internal server error" });
   }
