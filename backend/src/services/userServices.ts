@@ -116,7 +116,7 @@ export const login = async (req: Request, res: Response) => {
     // check if password is correct
     const isPasswordValid = await bcrypt.compare(password, foundUser.password);
     if (!isPasswordValid) {
-      return res.status(400).send("Invalid email or password");
+      return res.status(401).send("Invalid email or password");
     }
     console.log("Password is valid");
     // create token
