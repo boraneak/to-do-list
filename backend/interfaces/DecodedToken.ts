@@ -1,9 +1,3 @@
-import { Request } from "express";
-// an interface that extends the Request object
-export interface AuthenticatedRequest extends Request {
-  user?: NonNullable<unknown>;
-}
-// decoded token interface
 export interface DecodedToken {
   user: {
     id: number;

@@ -1,6 +1,7 @@
 import { Response, NextFunction } from "express";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
-import { AuthenticatedRequest, DecodedToken } from "../interfaces/index";
+import { AuthenticatedRequest } from "../interfaces/AuthenticatedRequest";
+import { DecodedToken } from "../interfaces/DecodedToken";
 const jwtSecret = process.env.JWT_SECRET!;
 
 export const verifyUserToken = (
