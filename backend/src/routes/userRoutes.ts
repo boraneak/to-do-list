@@ -4,6 +4,7 @@ import { verifyUserToken } from "../../middlewares/verifyUserToken";
 const router = express.Router();
 
 router.get("/", verifyUserToken, userServices.getAllUsers);
+router.get("/:id", verifyUserToken, userServices.getUserById);
 router.post("/register", userServices.register);
 router.post("/login", userServices.login);
 router.post("/create", verifyUserToken, userServices.createUser);
