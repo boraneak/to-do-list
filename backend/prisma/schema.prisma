@@ -13,6 +13,11 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+generator erd {
+  provider = "prisma-erd-generator-markdown"
+  output = "./ERD.md"
+}
+
 model User {
   id          Int      @id @default(autoincrement())
   email       String  @unique
