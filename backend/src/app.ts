@@ -7,7 +7,7 @@ const app = express();
 const port = process.env.PORT;
 app.use(morgan("dev"));
 app.use(express.json());
-app.use(routes);
+app.use("/api/v1", routes);
 
 app.get("/", (req, res) => res.send("hello world"));
 
