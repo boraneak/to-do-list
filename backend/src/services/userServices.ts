@@ -112,7 +112,6 @@ export const deleteUserById = async (req: Request, res: Response) => {
 
 export const login = async (req: Request, res: Response) => {
   try {
-    // const { userEmail, userPassword } = req.body;
     const {
       email,
       password,
@@ -120,6 +119,9 @@ export const login = async (req: Request, res: Response) => {
       email: string;
       password: string;
     } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({ error: "Email and password are required" });
+    }
     const foundUser = await prisma.user.findUnique({
       where: {
         email: email,
@@ -131,9 +133,8 @@ export const login = async (req: Request, res: Response) => {
     // check if password is correct
     const isPasswordValid = await bcrypt.compare(password, foundUser.password);
     if (!isPasswordValid) {
-      return res.status(401).send("Invalid email or password");
+      return res.status(401).send("Invalid password");
     }
-    console.log("Password is valid");
     // create token
     const token = jwt.sign({ user: foundUser }, jwtSecret, {
       expiresIn: tokenDuration,

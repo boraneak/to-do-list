@@ -18,5 +18,6 @@ app.use(notFound);
 
 app.listen(port, async () => {
   await connectToDatabase();
-  return console.log(`Express is listening at http://localhost:${port}`);
+  console.log(`Express is listening at http://localhost:${port}`);
 });
+export default app;
