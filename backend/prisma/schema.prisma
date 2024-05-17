@@ -28,6 +28,8 @@ model User {
   boardMembers Board[]    @relation("Members")
   cards        Card[]     @relation("Assignees")
   activities   Activity[]
+  createdAt    DateTime   @default(now())
+  updatedAt    DateTime   @updatedAt
 }
 
 model Board {
@@ -35,41 +37,49 @@ model Board {
   name       String
   background String
   ownerId    Int
-  owner      User       @relation("Owner", fields: [ownerId], references: [id])
+  owner      User       @relation("Owner", fields: [ownerId], references: [id], onDelete: Cascade)
   members    User[]     @relation("Members")
   lists      List[]
   cards      Card[]
   activities Activity[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
 }
 
 model List {
-  id       Int     @id @default(autoincrement())
-  name     String
-  order    Int     @default(0)
-  archived Boolean @default(false)
-  boardId  Int
-  board    Board   @relation(fields: [boardId], references: [id])
-  cards    Card[]
+  id        Int      @id @default(autoincrement())
+  name      String
+  order     Int      @default(0)
+  archived  Boolean  @default(false)
+  boardId   Int
+  board     Board    @relation(fields: [boardId], references: [id])
+  cards     Card[]
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Card {
-  id          Int     @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   title       String
   description String?
-  order       Int     @default(0)
-  archived    Boolean @default(false)
+  order       Int      @default(0)
+  archived    Boolean  @default(false)
   listId      Int
-  list        List    @relation(fields: [listId], references: [id])
+  list        List     @relation(fields: [listId], references: [id])
   boardId     Int
-  board       Board   @relation(fields: [boardId], references: [id])
-  assignees   User[]  @relation("Assignees")
+  board       Board    @relation(fields: [boardId], references: [id])
+  assignees   User[]   @relation("Assignees")
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
 
 model Activity {
-  id      Int    @id @default(autoincrement())
-  text    String
-  userId  Int
-  boardId Int
-  user    User   @relation(fields: [userId], references: [id])
-  board   Board  @relation(fields: [boardId], references: [id])
+  id        Int      @id @default(autoincrement())
+  text      String
+  userId    Int
+  boardId   Int
+  user      User     @relation(fields: [userId], references: [id])
+  board     Board    @relation(fields: [boardId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

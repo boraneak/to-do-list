@@ -6,12 +6,16 @@ erDiagram
 		String displayName
 		String imageUrl
 		String password
+		DateTime createdAt  "now()"
+		DateTime updatedAt
 	}
 	Board {
 		Int id PK  "autoincrement()"
 		String name
 		String background
 		Int ownerId FK
+		DateTime createdAt  "now()"
+		DateTime updatedAt
 	}
 	List {
 		Int id PK  "autoincrement()"
@@ -19,6 +23,8 @@ erDiagram
 		Int order
 		Boolean archived
 		Int boardId FK
+		DateTime createdAt  "now()"
+		DateTime updatedAt
 	}
 	Card {
 		Int id PK  "autoincrement()"
@@ -28,12 +34,16 @@ erDiagram
 		Boolean archived
 		Int listId FK
 		Int boardId FK
+		DateTime createdAt  "now()"
+		DateTime updatedAt
 	}
 	Activity {
 		Int id PK  "autoincrement()"
 		String text
 		Int userId FK
 		Int boardId FK
+		DateTime createdAt  "now()"
+		DateTime updatedAt
 	}
 	Board }o--|| User : owner
 	List }o--|| Board : board
