@@ -10,7 +10,14 @@ const tokenDuration = process.env.TOKEN_DURATION;
 
 export const getAllUsers = async (req: Request, res: Response) => {
   try {
-    const allUsers = await prisma.user.findMany();
+    const allUsers = await prisma.user.findMany({
+      include: {
+        boards: true,
+        boardMembers: true,
+        cards: true,
+        activities: true,
+      },
+    });
     res.json(allUsers);
   } catch (error) {
     console.error("Error fetching users:", error);

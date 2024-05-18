@@ -1,18 +1,18 @@
 import { Response, NextFunction } from "express";
 import jwt, { TokenExpiredError } from "jsonwebtoken";
-import { AuthenticatedRequest } from "../interfaces/AuthenticatedRequest";
+import { AuthRequest } from "../interfaces/AuthRequest";
 import { DecodedToken } from "../interfaces/DecodedToken";
 const jwtSecret = process.env.JWT_SECRET!;
 
 export const verifyUserToken = (
-  req: AuthenticatedRequest,
+  req: AuthRequest,
   res: Response,
   next: NextFunction
 ) => {
+  // const authHeader = req.headers.authorization;
   if (!req.headers.authorization) {
     return res.status(401).send("Unauthorized request");
   }
-
   const token: string = req.headers["authorization"]?.split(" ")[1];
   if (!token) {
     return res.status(401).send("Access denied. No token provided.");
