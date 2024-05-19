@@ -1,16 +1,5 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
-}
-
-datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
 }
 
 generator erd {
@@ -18,18 +7,23 @@ generator erd {
   output   = "./ERD.md"
 }
 
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
 model User {
   id           Int        @id @default(autoincrement())
-  email        String     @unique
   displayName  String
   imageUrl     String
   password     String
-  boards       Board[]    @relation("Owner")
-  boardMembers Board[]    @relation("Members")
-  cards        Card[]     @relation("Assignees")
-  activities   Activity[]
+  email        String     @unique
   createdAt    DateTime   @default(now())
   updatedAt    DateTime   @updatedAt
+  activities   Activity[]
+  boards       Board[]    @relation("Owner")
+  cards        Card[]     @relation("Assignees")
+  boardMembers Board[]    @relation("Members")
 }
 
 model Board {
@@ -37,13 +31,13 @@ model Board {
   name       String
   background String
   ownerId    Int
-  owner      User       @relation("Owner", fields: [ownerId], references: [id], onDelete: Cascade)
-  members    User[]     @relation("Members")
-  lists      List[]
-  cards      Card[]
-  activities Activity[]
   createdAt  DateTime   @default(now())
   updatedAt  DateTime   @updatedAt
+  activities Activity[]
+  owner      User       @relation("Owner", fields: [ownerId], references: [id], onDelete: Cascade)
+  cards      Card[]
+  lists      List[]
+  members    User[]     @relation("Members")
 }
 
 model List {
@@ -52,10 +46,10 @@ model List {
   order     Int      @default(0)
   archived  Boolean  @default(false)
   boardId   Int
-  board     Board    @relation(fields: [boardId], references: [id])
-  cards     Card[]
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  cards     Card[]
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
 }
 
 model Card {
@@ -65,12 +59,12 @@ model Card {
   order       Int      @default(0)
   archived    Boolean  @default(false)
   listId      Int
-  list        List     @relation(fields: [listId], references: [id])
   boardId     Int
-  board       Board    @relation(fields: [boardId], references: [id])
-  assignees   User[]   @relation("Assignees")
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
+  board       Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  list        List     @relation(fields: [listId], references: [id])
+  assignees   User[]   @relation("Assignees")
 }
 
 model Activity {
@@ -78,8 +72,8 @@ model Activity {
   text      String
   userId    Int
   boardId   Int
-  user      User     @relation(fields: [userId], references: [id])
-  board     Board    @relation(fields: [boardId], references: [id])
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  board     Board    @relation(fields: [boardId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }

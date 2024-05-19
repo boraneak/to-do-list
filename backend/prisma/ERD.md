@@ -2,10 +2,10 @@
 erDiagram
 	User {
 		Int id PK  "autoincrement()"
-		String email
 		String displayName
 		String imageUrl
 		String password
+		String email
 		DateTime createdAt  "now()"
 		DateTime updatedAt
 	}
@@ -47,9 +47,9 @@ erDiagram
 	}
 	Board }o--|| User : owner
 	List }o--|| Board : board
-	Card }o--|| List : list
 	Card }o--|| Board : board
-	Activity }o--|| User : user
+	Card }o--|| List : list
 	Activity }o--|| Board : board
+	Activity }o--|| User : user
 
 ```
