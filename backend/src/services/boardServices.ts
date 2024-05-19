@@ -42,6 +42,14 @@ export const createBoard = async (req: AuthRequest, res: Response) => {
         ownerId: userId,
       },
     });
+    // log the activity
+    await prisma.activity.create({
+      data: {
+        text: `Board ${name} created`,
+        userId: userId,
+        boardId: board.id,
+      },
+    });
     res.status(201).json(board);
   } catch (error) {
     console.error("Error creating board:", error);
@@ -49,7 +57,7 @@ export const createBoard = async (req: AuthRequest, res: Response) => {
   }
 };
 
-export const updateBoardById = async (req: Request, res: Response) => {
+export const updateBoardById = async (req: AuthRequest, res: Response) => {
   try {
     const boardId: number = parseInt(req.params.id, 10);
     const {
@@ -59,6 +67,7 @@ export const updateBoardById = async (req: Request, res: Response) => {
       name?: string;
       background?: string;
     } = req.body;
+    const userId = req.user!.id;
     const updatedBoard = await prisma.board.update({
       where: { id: boardId },
       data: {
@@ -71,6 +80,14 @@ export const updateBoardById = async (req: Request, res: Response) => {
         lists: true,
         cards: true,
         activities: true,
+      },
+    });
+    // log the activity
+    await prisma.activity.create({
+      data: {
+        text: `Board ${name} updated`,
+        userId: userId,
+        boardId: boardId,
       },
     });
     res.status(200).json(updatedBoard);
@@ -103,10 +120,11 @@ export const getBoardById = async (req: Request, res: Response) => {
   }
 };
 
-export const deleteBoardById = async (req: Request, res: Response) => {
+export const deleteBoardById = async (req: AuthRequest, res: Response) => {
   try {
     const boardId: number = parseInt(req.params.id, 10);
     await prisma.board.delete({ where: { id: boardId } });
+    // TODO: log the activity
     res.status(204).send();
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
@@ -115,6 +133,7 @@ export const deleteBoardById = async (req: Request, res: Response) => {
         return;
       }
     }
+    console.log(error);
     res.status(500).json({ error: "Internal server error" });
   }
 };

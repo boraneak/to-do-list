@@ -36,6 +36,7 @@ export const createCard = async (req: Request, res: Response) => {
         boardId,
       },
     });
+    // TODO: log the activity
     res.status(201).json(card);
   } catch (error) {
     console.error("Error creating card:", error);
@@ -71,6 +72,7 @@ export const updateCardById = async (req: Request, res: Response) => {
         boardId,
       },
     });
+    // TODO: log the activity
     res.status(200).json(updatedCard);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -96,6 +98,7 @@ export const deleteCardById = async (req: Request, res: Response) => {
   try {
     const cardId: number = parseInt(req.params.id, 10);
     await prisma.card.delete({ where: { id: cardId } });
+    // TODO: log the activity
     res.status(204).send();
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {

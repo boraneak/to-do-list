@@ -36,6 +36,7 @@ export const creatList = async (req: Request, res: Response) => {
         boardId,
       },
     });
+    // TODO: log the activity
     res.status(201).json(list);
   } catch (error) {
     console.error("Error creating list:", error);
@@ -65,6 +66,7 @@ export const updateListById = async (req: Request, res: Response) => {
         boardId,
       },
     });
+    // TODO: log the activity
     res.status(200).json(updatedList);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -96,6 +98,7 @@ export const deleteListById = async (req: Request, res: Response) => {
   try {
     const listId: number = parseInt(req.params.id, 10);
     await prisma.list.delete({ where: { id: listId } });
+    // TODO: log the activity
     res.status(204).send();
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
